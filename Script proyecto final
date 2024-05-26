@@ -1,0 +1,32 @@
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("RCy3")
+library(RCy3)
+
+install.packages("WGCNA")
+install.packages("BoolNet")
+
+library(WGCNA)
+library(BoolNet)
+
+library(igraph)
+
+install.packages("remotes")
+remotes::install_github("zdk123/SpiecEasi")
+
+plot_richness(Objeto_phyloseq, measures = c("Shannon", "Simpson", "Chao1") )
+
+matriz<-cor(t(base_de_datos))
+
+red<- graph_from_adjacency_matrix(matriz, mode="directed")
+plot(red, vertex.color="aquamarine", edge.color= "black", vertex.size=18, edge.arrow.size=.1, layout= layout.circle(redM), vertex.label.cex = .6)
+
+umbral <- 1
+red_umbral<- ifelse(abs(matriz) > umbral, 1, 0)
+
+red_<- graph_from_adjacency_matrix(red_umbral, mode="directed")
+plot(red_, vertex.color="aquamarine", edge.color= "black", vertex.size=18, edge.arrow.size=.1, layout= layout.circle(redM), vertex.label.cex = .6)
+
+
+createNetworkFromIgraph(red_, "Microbioma")
